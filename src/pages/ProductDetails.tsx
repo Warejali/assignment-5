@@ -1,12 +1,24 @@
 import ProductReview from '@/components/ProductReview';
 import { useSingleProductQuery } from '@/redux/features/products/productApi';
-
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export default function ProductDetails() {
   const { id } = useParams();
+  const history = useHistory();
 
   const { data: product, isLoading, error } = useSingleProductQuery(id);
+
+  const handleDelete = () => {
+    // Perform delete operation
+    // Assuming there is a deleteProduct function available
+    deleteProduct(id);
+    history.push('/products'); // Redirect to the products page after deleting
+  };
+
+  const handleEdit = () => {
+    // Redirect to the edit product page
+    history.push(`/products/edit/${id}`);
+  };
 
   return (
     <>
@@ -28,8 +40,12 @@ export default function ProductDetails() {
           </ul>
           <div className="flex space-x-2">
             <button className="text-2xl text-red-600">&hearts;</button>
-            <button className="text-2xl text-blue-600">Edit</button>
-            <button className="text-2xl text-gray-600">Delete</button>
+            <button className="text-2xl text-blue-600" onClick={handleEdit}>
+              Edit
+            </button>
+            <button className="text-2xl text-gray-600" onClick={handleDelete}>
+              Delete
+            </button>
           </div>
         </div>
       </div>
